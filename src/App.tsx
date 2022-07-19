@@ -1,6 +1,5 @@
-import React from "react";
-import "./App.css";
 import MoviesTable from "./components/MoviesTable";
+import "./App.css";
 
 function App() {
   return (

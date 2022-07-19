@@ -1,4 +1,6 @@
 import React, { useEffect, useState } from "react";
+import TableBody from "../common/TableBody";
+import TableHeader from "../common/TableHeader";
 import { getMovies } from "../services/movieService";
 
 export interface Movie {
@@ -11,7 +13,8 @@ export interface Movie {
 }
 
 const MoviesTable: React.FC = () => {
-  const [movies, setMovies] = useState([]);
+  const [movies, setMovies] = useState<Array<Movie>>([]);
+  const [liked, setLiked] = useState<boolean>(false);
   useEffect(() => {
     const moviesRequest = async () => {
       const { data }: any = await getMovies();
@@ -19,28 +22,18 @@ const MoviesTable: React.FC = () => {
     };
     moviesRequest();
   }, []);
+  const handleLike = (movie: Movie) => {
+    const moviesCopy = [...movies];
+    const index = movies.indexOf(movie);
+    moviesCopy[index].liked
+      ? (moviesCopy[index].liked = false)
+      : (moviesCopy[index].liked = true);
+    setMovies(moviesCopy);
+  };
   return (
     <table className="table">
-      <thead>
-        <tr>
-          <th scope="col">Title</th>
-          <th scope="col">Genre</th>
-          <th scope="col">Rate</th>
-          <th scope="col">Stock</th>
-        </tr>
-      </thead>
-      <tbody>
-        {movies.map((m: Movie) => {
-          return (
-            <tr>
-              <th scope="row">{m.title}</th>
-              <td>{m.genre.name}</td>
-              <td>{m.dailyRentalRate}</td>
-              <td>{m.numberInStock}</td>
-            </tr>
-          );
-        })}
-      </tbody>
+      <TableHeader />
+      <TableBody liked={liked} data={movies} onLike={handleLike} />
     </table>
   );
 };
