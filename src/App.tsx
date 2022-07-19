@@ -4,9 +4,9 @@ import MoviesTable from "./components/MoviesTable";
 
 function App() {
   return (
-    <div className="App">
+    <main className="container">
       <MoviesTable />
-    </div>
+    </main>
   );
 }
 
